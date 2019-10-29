@@ -1,0 +1,17 @@
+﻿@model IEnumerable<HomeWork.Models.City>
+
+<div id="history">
+    <h3>История запросов:</h3>
+    @*<ul id="ulHistory">
+        @foreach(var item in Model){
+            <li class="btn btn-default">
+                @item.Name
+            </li>
+        }
+    </ul>*@
+
+    @foreach (var item in Model)
+    {
+        <button value="@item.Name" class="btn btn-default historyButton">@item.Name</button>
+    }
+</div>

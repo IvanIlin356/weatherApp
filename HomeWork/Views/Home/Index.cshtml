@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "Важней всего погода в доме!";
+}
+
+<div class="jumbotron">
+    <h1>Прогноз погоды</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="row">
+            @using (Ajax.BeginForm("WeatherData", new AjaxOptions { UpdateTargetId = "currentWeatherResults", OnSuccess = "reloadHistory", LoadingElementId = "loading" }))
+            {
+                <label for="cityInput">Укажите город:</label> <br />
+                <input id="cityInput" type="text" name="cityName" />
+                <input id="ajaxSubmitRequest" type="submit" value="Получить прогноз" />
+            }
+        </div>
+        <br />
+        <div id="historyParent" class="row">
+            @{ Html.RenderAction("CityHistory");}
+        </div>
+    </div>
+
+    @*<div id="currentWeatherResults" class="col-md-9">
+        <p>Укажите город погода в котором, Вас интересует! Город можно выбрать из истории запросов</p>        
+    </div>*@
+
+    <div id="currentWeatherResults" class="col-md-9">
+        <div class="row">
+            @Helpers.getLoadingDiv()
+        </div>
+        <div id="currentWeatherResults" class="row">
+            <p>Укажите город погода в котором, Вас интересует! Город можно выбрать из истории запросов</p> 
+        </div>
+
+    </div>
+</div>
+
+@Scripts.Render("~/scripts/jquery-1.10.2.min.js")
+@Scripts.Render("~/scripts/jquery.unobtrusive-ajax.min.js")
+
+@section scripts {
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#historyParent').on('click', '.historyButton', function () {
+            $('#cityInput').val(($(this).val()));
+            $('#ajaxSubmitRequest').trigger('click');
+        });
+    });
+
+    function reloadHistory(e) {
+        $('#cityInput').val('');
+        $('#history').load('/Home/CityHistory');
+  };
+</script>
+    }
